@@ -168,6 +168,10 @@ func (c *client) RegisterService(name string, addr string, tags ...string) error
 		Address: host,
 		Port:    port,
 		Tags:    tags,
+		Check: &consulapi.AgentServiceCheck{
+			Script:   fmt.Sprintf("curl localhost:%d > /dev/null 2>&1", port),
+			Interval: "10s",
+		},
 	}
 	return c.agent.ServiceRegister(reg)
 }
