@@ -38,3 +38,7 @@ get int value
 ### Put(key string, value string) (*consulapi.WriteMeta, error)
 
 put KVPair
+
+### LoadStruct(parent string, i interface{}) error
+
+Load struct
