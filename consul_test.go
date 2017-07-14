@@ -1,4 +1,4 @@
-package test
+package consul
 
 import (
 	crand "crypto/rand"
@@ -6,8 +6,6 @@ import (
 	"testing"
 	"time"
 
-	"github.com/l-vitaly/consul"
-	"github.com/l-vitaly/consul/testutil"
 	"github.com/l-vitaly/gounit"
 )
 
@@ -24,8 +22,8 @@ type testStruct struct {
 	Nested Nested
 }
 
-func makeTestClient() (consul.Client, error) {
-	return testutil.NewClient()
+func makeTestClient() (Client, error) {
+	return NewClientWithDefaultConfig()
 }
 
 func testKey() string {
@@ -87,12 +85,14 @@ func TestLoadStructDefaultValue(t *testing.T) {
 	var s struct {
 		Name string `consul:"default:Rob Pike"`
 		Size int    `consul:"default:100"`
+		Url  string `consul:"name:u;default:http://localhost"`
 	}
 
 	err = client.LoadStruct("service", &s)
 	u.AssertNotError(err, "Err")
 	u.AssertEquals("Rob Pike", s.Name, "Equals Name")
 	u.AssertEquals(100, s.Size, "Equals Size")
+	u.AssertEquals("http://localhost", s.Url, "Equals Url")
 }
 
 func TestWatchGet(t *testing.T) {
