@@ -38,3 +38,18 @@ get int value
 ### Put(key string, value string) (*consulapi.WriteMeta, error)
 
 put KVPair
+
+### LoadStruct(parent string, i interface{}) error
+
+Load key/value to structure, basic usage:
+
+``` golang
+var s struct {
+  Name string `consul:"default:Rob Pike"` // set default value if not exists key
+  Size int    `consul:"default:100"`
+  Url  string `consul:"name:u;default:http://localhost"` // different key name is "n"
+  Other struct { // nested keys
+    Name1 string `consul:"default:no"`
+  }
+}
+```
